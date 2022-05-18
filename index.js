@@ -50,6 +50,25 @@ async function run() {
       const result = await serviceCollection.deleteOne(query);
       res.send(result);
     });
+
+    //update database PUT
+    app.put("/service/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateData = req.body;
+      const filter = { _id: ObjectId(id) };
+      const options = { upsert: true };
+      const updatedDoc = {
+        $set: {
+          quantity: updateData.quantity,
+        },
+      };
+      const result = await serviceCollection.updateOne(
+        filter,
+        updatedDoc,
+        options
+      );
+      res.send(result);
+    });
   } finally {
   }
 }
